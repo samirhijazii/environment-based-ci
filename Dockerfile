@@ -1,5 +1,5 @@
 # Builder Stage
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN npm run build
 
 
 # Production Stage
-FROM node:18-alpine AS production
+FROM node:20-alpine AS production
 
 WORKDIR /app
 ENV NODE_ENV=production
