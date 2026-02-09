@@ -35,8 +35,8 @@ jobs:
                 echo "Running tests on ${{github.ref_name}}"
                 # npm test
 
-            # Run security scan only on main
-            - name: Security scan
+            # Run deployment only on main
+            - name: Run Deployment
               if: github.ref_name == 'main'
               run: |
-                echo "Running security scan on main branch"
+                echo "Deploy your app on a server"
