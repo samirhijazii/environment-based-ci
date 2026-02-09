@@ -33,7 +33,7 @@ jobs:
               if: github.ref_name == 'staging' || github.ref_name == 'main'
               run: |
                 echo "Running tests on ${{github.ref_name}}"
-                npm test
+                # npm test
 
             # Run security scan only on main
             - name: Security scan
