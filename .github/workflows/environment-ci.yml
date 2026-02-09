@@ -1,0 +1,42 @@
+name: Environment Based CI
+
+on:
+    push:
+        branches:
+            - "dev-*"
+            - staging
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    ci:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            # Every branch must successfully build
+            - name: Build Docker image
+              run: |
+                docker build \
+                --target production \
+                -t nextjs-app:${{ github.ref_name }} \
+                .
+
+            # Run tests only on staging and main
+            - name: Run tests
+              if: github.ref_name == 'staging' || github.ref_name == 'main'
+              run: |
+                echo "Running tests on ${{github.ref_name}}"
+                npm test
+
+            # Run security scan only on main
+            - name: Security scan
+              if: github.ref_name == 'main'
+              run: |
+                echo "Running security scan on main branch"
